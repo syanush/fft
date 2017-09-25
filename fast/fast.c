@@ -222,7 +222,7 @@ int fft(const size_t N, double *re, double *im) {
 
         ////
 
-#pragma omp parallel shared ( re, im, wre, wim, n, a, j ) private (i)
+#pragma omp parallel shared ( re, im, wre, wim, b, a, j ) private (i)
 #pragma omp for
         for (i = 0; i < N; ++i) {
             if (!(i & b)) {
