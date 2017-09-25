@@ -7,24 +7,24 @@
 
 #include "fast.h"
 
-#define max_bits 25
-#define N (1 << max_bits)
+//#define max_bits 25
+//#define N (1 << max_bits)
 
-#define bits 23
-const size_t n = 1 << bits; // =2^bits
+#define bits 22
+#define n (1 << bits)
 
-double input_real[N]; // = {1, 2, 0, -1};
-double input_imag[N]; // = {0, -1, -1, 2};
+double input_real[n]; // = {1, 2, 0, -1};
+double input_imag[n]; // = {0, -1, -1, 2};
 
-#define M 40000000
-double a[M];
-
-void test1() {
-#pragma omp parallel for
-    for(int i=0;i<M;i++) {
-        a[i] = cos(sin(i));
-    }
-}
+//#define M 40000000
+//double a[M];
+//
+//void test1() {
+//#pragma omp parallel for
+//    for(int i=0;i<M;i++) {
+//        a[i] = cos(sin(i));
+//    }
+//}
 
 int main() {
     int error_code;
@@ -40,7 +40,8 @@ int main() {
 
     //srand(time(NULL));
 
-    for (int t = 1; t <= 4; ++t) {
+    for (int t = 6; t >=1; --t) {
+        //printf("%d\n", t);
         omp_set_num_threads(t);
         srand(12345);
 

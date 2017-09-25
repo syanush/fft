@@ -9,4 +9,4 @@ if (OPENMP_FOUND)
 endif()
 
 add_library(fast fast.c fast.h)
-target_link_libraries(fast m gomp Threads::Threads)
+target_link_libraries(fast m gomp)
