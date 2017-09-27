@@ -7,15 +7,31 @@
 
 #include "fast.h"
 
-#define max_bits 25
-#define N (1 << max_bits)
+//#define max_bits 25
+//#define N (1 << max_bits)
 
-#define bits 23
-const size_t n = 1 << bits; // =2^bits
+#define bits 22
+#define n (1 << bits)
 
-double input_real[N]; // = {1, 2, 0, -1};
-double input_imag[N]; // = {0, -1, -1, 2};
+double input_real[n]; // = {1, 2, 0, -1};
+double input_imag[n]; // = {0, -1, -1, 2};
 
+//#define M 40000000
+//double a[M];
+//
+//void test1() {
+//#pragma omp parallel for
+//    for(int i=0;i<M;i++) {
+//        a[i] = cos(sin(i));
+//    }
+//}
+
+int main() {
+    int error_code;
+
+    printf ( "  Number of processors available = %d\n", omp_get_num_procs () );
+    printf ( "  Number of threads =              %d\n", omp_get_max_threads () );
+    omp_set_num_threads(1);
 //#define M 40000000
 //double a[M];
 //
