@@ -1,6 +1,5 @@
 #include <stdio.h>
 //#include <time.h>
-//#include <pthread.h>
 #include "fast.h"
 
 int reverse(int N, int n) {
@@ -41,92 +40,12 @@ void fft_reverse(size_t N, double *re, double *im) {
     }
 }
 
-//void fft_work(size_t m1, size_t m2, double *re, double *im, double *wre, double *wim, size_t b, size_t a) {
-//    for (size_t i = m1; i < m2; ++i) {
-//        if (!(i & b)) {
-//            int in = i + b;
-//            double r1 = re[i];
-//            double i1 = im[i];
-//            int index = (i * a) % (b * a);
-//            double r2 = wre[index] * re[in] - wim[index] * im[in];
-//            double i2 = wre[index] * im[in] + wim[index] * re[in];
-//            re[i] = r1 + r2;
-//            im[i] = i1 + i2;
-//            re[in] = r1 - r2;
-//            im[in] = i1 - i2;
-//        }
-//    }
-//}
-
-
-
-
-//int thread_count;
-
-//struct params {
-//    size_t m1;
-//    size_t m2;
-//    double *re;
-//    double *im;
-//    double *wre;
-//    double *wim;
-//    size_t b;
-//    size_t a;
-//};
-
-//void* fft_pthreads(void *args) {
-//    struct params *fargs = (struct params*)args;
-//    size_t m1 = fargs->m1;
-//    size_t m2 = fargs->m2;
-//    double *re = fargs->re;
-//    double *im = fargs->im;
-//    double *wre = fargs->wre;
-//    double *wim = fargs->wim;
-//    size_t b = fargs->b;
-//    size_t a = fargs->a;
-//
-//    for (size_t i = m1; i < m2; ++i) {
-//        if (!(i & b)) {
-//            int in = i + b;
-//            double r1 = re[i];
-//            double i1 = im[i];
-//            int index = (i * a) % (b * a);
-//            double r2 = wre[index] * re[in] - wim[index] * im[in];
-//            double i2 = wre[index] * im[in] + wim[index] * re[in];
-//            re[i] = r1 + r2;
-//            im[i] = i1 + i2;
-//            re[in] = r1 - r2;
-//            im[in] = i1 - i2;
-//        }
-//    }
-//
-//
-//    return NULL;
-//}
 
 int fft(const size_t N, double *re, double *im) {
 
     double *wre, *wim;
     size_t b;
     size_t a;
-
-//    long thread;
-//    pthread_t *thread_handles;
-//    thread_count = 2;
-//    thread_handles = malloc (thread_count*sizeof(pthread_t));
-
-//    struct params args0;
-//    args0.re = re;
-//    args0.im = im;
-//    args0.wre = wre;
-//    args0.wim = wim;
-//
-//    struct params args1;
-//    args1.re = re;
-//    args1.im = im;
-//    args1.wre = wre;
-//    args1.wim = wim;
-
 
     size_t i, j;
 
@@ -140,9 +59,9 @@ int fft(const size_t N, double *re, double *im) {
     double phi = -M_2_PI / N;
 
     // предвычисление множителей
-//#pragma omp parallel shared ( wre, wim, phi ) private ( i )
-//#pragma omp for
-    for (i = 0; i < N / 2; ++i) {
+#pragma omp parallel
+#pragma omp for
+    for (size_t i = 0; i < N / 2; ++i) {
         double alpha = phi * i;
         wre[i] = cos(alpha);
         wim[i] = sin(alpha);
@@ -155,74 +74,9 @@ int fft(const size_t N, double *re, double *im) {
 
     fft_reverse(N, re, im);
 
-    //clock_t end = clock();
-    //float seconds = (float) (end - start) / CLOCKS_PER_SEC;
-
-    //printf("%f sec\n", seconds);
-
-
-
-
     for (j = 0; j < log2N; ++j) {
-        // Main loop paralelization
 
-//        struct params args;
-//
-//#pragma omp parallel shared(args, re, im, wre, wim, b, a)
-//        {
-//
-//            args.re = re;
-//            args.im = im;
-//            args.wre = wre;
-//            args.wim = wim;
-//            args.b = b;
-//            args.a = a;
-//
-//#pragma omp sections
-//            {
-//#pragma omp section
-//                {
-//                    //fft_work(0, N / 2, re, im, wre, wim, b, a);
-//                    args.m1 = 0;
-//                    args.m2 = N/2;
-//                    fft_pthreads(&args);
-//                }
-//#pragma omp section
-//                {
-//                    //fft_work(N / 2, N, re, im, wre, wim, b, a);
-//                    args.m1 = N/2;
-//                    args.m2 = N;
-//                    fft_pthreads(&args);
-//                }
-//            }
-//        }
-
-        ////
-
-
-
-//        args0.b = b;
-//        args0.a = a;
-//        args0.m1 = 0;
-//        args0.m2 = N;
-//
-//        args1.b = b;
-//        args1.a = a;
-//        args1.m1 = N/2;
-//        args1.m2 = N;
-//
-//        fft_pthreads(&args0);
-
-        //pthread_create(&thread_handles[0], NULL, fft_pthreads, &args0);
-        //pthread_create(&thread_handles[1], NULL, fft_pthreads, &args1);
-        //pthread_join(thread_handles[0], NULL);
-        //pthread_join(thread_handles[1], NULL);
-
-
-
-        ////
-
-#pragma omp parallel shared ( re, im, wre, wim, b, a, j ) private (i)
+#pragma omp parallel
 #pragma omp for
         for (i = 0; i < N; ++i) {
             if (!(i & b)) {
@@ -247,8 +101,6 @@ int fft(const size_t N, double *re, double *im) {
 
     free(wre);
     free(wim);
-
-    //free(thread_handles);
 
     return 0;
 }

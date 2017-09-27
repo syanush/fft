@@ -16,7 +16,6 @@ endif()
 #find_package(Threads REQUIRED)
 
 add_executable(fft main.c)
-#target_link_libraries(fft m fast gomp Threads::Threads)
 target_link_libraries(fft m fast gomp)
 
 
