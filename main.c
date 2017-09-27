@@ -10,11 +10,11 @@
 //#define max_bits 25
 //#define N (1 << max_bits)
 
-#define bits 22
-#define n (1 << bits)
+//#define bits 22
+//#define n (1 << bits)
 
-double input_real[n]; // = {1, 2, 0, -1};
-double input_imag[n]; // = {0, -1, -1, 2};
+//double input_real[n]; // = {1, 2, 0, -1};
+//double input_imag[n]; // = {0, -1, -1, 2};
 
 //#define M 40000000
 //double a[M];
@@ -26,12 +26,7 @@ double input_imag[n]; // = {0, -1, -1, 2};
 //    }
 //}
 
-int main() {
-    int error_code;
 
-    printf ( "  Number of processors available = %d\n", omp_get_num_procs () );
-    printf ( "  Number of threads =              %d\n", omp_get_max_threads () );
-    omp_set_num_threads(1);
 //#define M 40000000
 //double a[M];
 //
@@ -51,33 +46,41 @@ void tut1() {
 
 #define nmax 500000000
 void tut2() {
-    const int n=500000000;
+    const long n=500000000;
     double dx = 1.0/nmax;
     double sum = 0;
 
-    int i;
+    //int i;
 
 #pragma omp parallel for reduction(+:sum)
-    for(i=0;i<nmax;++i) {
+    for(int i=0;i<nmax;++i) {
         double x=i*dx;
         sum += dx*sqrt(1-x*x);
     }
 
-    printf("delta = %e    ", abs(M_PI/4-sum));
+    printf("delta = %f    ", abs(M_PI/4-sum));
 }
 
 int main() {
 
-    for (int t = 1; t <= 4; ++t) {
+
+    for (int t = 1; t <=4; ++t) {
         omp_set_num_threads(t);
+        printf("threads=%d\n", t);
+        for(int k=0;k<5;k++) {
 
-        clock_t start = clock();
+            //clock_t start = clock();
+            double wall_start = omp_get_wtime();
 
-        tut2();
+            tut2();
 
-        clock_t end = clock();
-        float seconds = (float) (end - start) / CLOCKS_PER_SEC;
-        printf("   %f sec\n", seconds);
+            double wall_end = omp_get_wtime();
+            double sec = wall_end - wall_start;
+            printf("   %f sec\n", sec);
+            //clock_t end = clock();
+            //float seconds = (float) (end - start) / CLOCKS_PER_SEC;
+            //printf("   %f sec\n", seconds);
+        }
     }
 
 
