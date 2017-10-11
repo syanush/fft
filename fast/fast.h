@@ -1,5 +1,5 @@
 //
-// Created by ysi on 9/25/17.
+// The code is free for any use
 //
 
 #ifndef FFT_FAST_H
@@ -9,6 +9,8 @@
 #include <math.h>
 #include <omp.h>
 
-int fft(size_t N, double *re, double *im);
+void fft_reverse(size_t N, double *xr, double *xi);
+void FFT_DIT_RN(const size_t N, double *xr, double *xi);
+void FFT_DIT_RN_2(const size_t N, double *xr, double *xi);
 
 #endif //FFT_FAST_H

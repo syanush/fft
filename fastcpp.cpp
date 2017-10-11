@@ -1,3 +1,7 @@
+//
+// The code is free for any use
+//
+
 #include <iostream>
 #include <iomanip>
 #include <complex>
@@ -198,7 +202,7 @@ vector<complex<double>> dft(vector<complex<double>> a) {
     for (int k = 0; k < n; ++k) {
         y[k] = {0, 0};
         for (int j = 0; j < n; ++j) {
-            double arg = alpha * ((k * j) % n); // sign corresponds to the sign of the phase
+            double arg = alpha * ((k * j) % n); // the sign corresponds to the sign of the phase
             y[k] += polar(1.0, arg) * a[j];
         }
     }
@@ -225,7 +229,7 @@ int main() {
     clock_t tic, toc;
     double elapsed_secs;
 
-    tic = clock();
+    tic = clock(); // TODO: we need to measure wall time
     vector<complex<double>> y1 = fft(a);
     toc = clock();
     elapsed_secs = double(toc - tic) / CLOCKS_PER_SEC;
@@ -247,28 +251,6 @@ int main() {
     }
 
     cout << "Error: " << err << endl;
-
-//    auto nthreads = omp_get_num_threads();
-//    cout << nthreads << endl;
-//
-//    int tid;
-//
-///* Fork a team of threads giving them their own copies of variables */
-//#pragma omp parallel private(nthreads, tid)
-//    {
-//
-//        /* Obtain thread number */
-//        tid = omp_get_thread_num();
-//        printf("Hello World from thread = %d\n", tid);
-//
-//        /* Only master thread does this */
-//        if (tid == 0)
-//        {
-//            nthreads = omp_get_num_threads();
-//            printf("Number of threads = %d\n", nthreads);
-//        }
-//
-//    }  /* All threads join master thread and disband */
 
     return 0;
 }
